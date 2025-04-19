@@ -1,3 +1,4 @@
+using AnimaxPlayApi.Application.Services;
 using AnimaxPlayApi.Core.Interfaces;
 using AnimaxPlayApi.Infrastructure.ExternalServices.Firebase;
 using AnimaxPlayApi.Infrastructure.ExternalServices.TMDB;
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<TMDBOptions>(builder.Configuration.GetSection("TMDB"));
 builder.Services.AddHttpClient<TMDBService>();
 builder.Services.AddSingleton<FirebaseAuthService>();
+builder.Services.AddHttpClient<IEmbedService, EmbedService>();
 
 builder.Services.AddControllers();
 

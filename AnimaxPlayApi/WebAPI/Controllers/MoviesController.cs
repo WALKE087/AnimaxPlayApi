@@ -16,21 +16,28 @@ namespace AnimaxPlayApi.WebAPI.Controllers
         }
 
         [HttpGet("popular")]
-        public async Task<IActionResult> GetPopular()
+        public async Task<IActionResult> GetPopular([FromQuery] int page = 1)
         {
             try
             {
-                var result = await _tmdbService.GetPopularMoviesAsync();
+                var result = await _tmdbService.GetPopularMoviesAsync(page);
                 if (result == null || result.Results == null)
                     return NotFound("No se encontraron películas populares.");
 
-                return Ok(result);
+                return Ok(new
+                {
+                    currentPage = page,
+                    totalPages = result.Total_Pages,
+                    totalResults = result.Total_Results,
+                    items = result.Results
+                });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error al obtener películas: {ex.Message}");
             }
         }
+
 
         [HttpGet("search")]
         public async Task<IActionResult> SearchMovies([FromQuery] string query)

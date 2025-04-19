@@ -15,9 +15,9 @@ namespace AnimaxPlayApi.Infrastructure.ExternalServices.TMDB
             _requestHandler = new TMDBRequestHandler(httpClient, opts);
         }
 
-        public Task<MovieResponse?> GetPopularMoviesAsync()
+        public Task<MovieResponse?> GetPopularMoviesAsync(int page = 1)
         {
-            return _requestHandler.GetAsync<MovieResponse>("movie/popular?language=es-ES&page=1");
+            return _requestHandler.GetAsync<MovieResponse>($"movie/popular?language=es-ES&page={page}");
         }
 
         public Task<MovieResponse?> SearchMoviesAsync(string query)
@@ -25,5 +25,6 @@ namespace AnimaxPlayApi.Infrastructure.ExternalServices.TMDB
             var safeQuery = Uri.EscapeDataString(query);
             return _requestHandler.GetAsync<MovieResponse>($"search/multi?query={safeQuery}&language=es-ES&page=1");
         }
+        
     }
 }
